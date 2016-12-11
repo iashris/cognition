@@ -111,7 +111,7 @@ button{
 
 
 <br><br>
-<button>Submit</button>
+<button onclick='submitthis();'>Submit</button>
 </div>
 
 
@@ -121,17 +121,7 @@ button{
 <div class="main" id="myContainer"></div><!--This is where the p5 happens-->
 </body>
 <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyAOYAKVeuZsPB3nunaQz731be8764hBKg8",
-    authDomain: "tree-cognition.firebaseapp.com",
-    databaseURL: "https://tree-cognition.firebaseio.com",
-    storageBucket: "tree-cognition.appspot.com",
-    messagingSenderId: "987416380147"
-  };
-  firebase.initializeApp(config);
-</script>
+
 
 <script
   src="https://code.jquery.com/jquery-2.2.4.min.js"
@@ -146,6 +136,7 @@ button{
   crossorigin="anonymous"></script>
 <script type="text/javascript">
 var roadwidth=25;
+var foliageshape;
 var treeheight=250,satx=120,numtrees=10,treetrunk=5,foliagesize=150;
 $( function() {
     $( "#slider" ).slider({
@@ -203,6 +194,18 @@ function setup(){
 	var myCanvas = createCanvas(windowWidth*0.75,windowHeight);
   myCanvas.parent('myContainer');
   noStroke();
+    var config = {
+    apiKey: "AIzaSyAOYAKVeuZsPB3nunaQz731be8764hBKg8",
+    authDomain: "tree-cognition.firebaseapp.com",
+    databaseURL: "https://tree-cognition.firebaseio.com",
+    storageBucket: "tree-cognition.appspot.com",
+    messagingSenderId: "987416380147"
+  };
+  firebase.initializeApp(config);
+  console.log(firebase);
+  var database=firebase.database();
+  ref=database.ref('inputs');
+
 
 }
 function draw(){
@@ -291,20 +294,24 @@ for(var j=1;j<numtrees;j++){
 	var collo='rgba(30,'+satx+',90,0.88)';
 	fill(collo);
 	if($('#radio-1').is(':checked')){
+		foliageshape='circle';
 	ellipse(herty,verty-treeH,foliageS,foliageS);
 	ellipse(2*cX-herty,verty-treeH,foliageS,foliageS);
 	}
 	else if($('#radio-2').is(':checked')){
+		foliageshape='cone';
 		triangle(herty,verty-treeH-1.6*foliageS,herty-foliageS*0.5,verty-treeH+0.4*foliageS,herty+foliageS*0.5,verty-treeH+foliageS*0.4);
 		triangle(width-herty,verty-treeH-1.6*foliageS,width-herty+foliageS*0.5,verty-treeH+0.4*foliageS,width-herty-foliageS*0.5,verty-treeH+foliageS*0.4);
 	}
 	else if($('#radio-4').is(':checked')){
+		foliageshape='rect';
 		rectMode(CENTER);
 		rect(herty,verty-treeH,foliageS,foliageS);
 		rect(2*cX-herty,verty-treeH,foliageS,foliageS);
 		rectMode(CORNER);
 	}
 	else{
+		foliageshape='trapezium';
 		beginShape();
 		vertex(herty-0.3*foliageS,verty-treeH-1.4*foliageS);
 		vertex(herty+0.3*foliageS,verty-treeH-1.4*foliageS);
@@ -334,10 +341,19 @@ for(var j=1;j<numtrees;j++){
 function windowResized() {
 	resizeCanvas(windowWidth*0.75, windowHeight);
 }
-function conicalTree(stemsize){
-	this.x=x;
-	this.y=y;
-
+function submitthis(){
+alert('pressed');
+var data={
+roadwidth:roadwidth,
+treeheight:treeheight,
+numtrees:numtrees,
+saturation:satx,
+trunksize:treetrunk,
+foliagesize:foliagesize,
+shape:foliageshape
+};
+ref.push(data);
+alert('Thank you for your response!');
 }
 </script>
 </html>
