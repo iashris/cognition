@@ -101,7 +101,7 @@ button{
 
 
     <label for="radio-1">Circular</label>
-    <input class="l" type="radio" name="radio-1" id="radio-1">
+    <input class="l" type="radio" name="radio-1" id="radio-1" checked>
     <label for="radio-3">Trapezoidal</label>
     <input class="r" type="radio" name="radio-1" id="radio-3">
     <label for="radio-2">Conical</label>
@@ -290,8 +290,36 @@ for(var j=1;j<numtrees;j++){
 	var foliageS=5+0.5*j*(foliagesize/numtrees);
 	var collo='rgba(30,'+satx+',90,0.88)';
 	fill(collo);
+	if($('#radio-1').is(':checked')){
 	ellipse(herty,verty-treeH,foliageS,foliageS);
 	ellipse(2*cX-herty,verty-treeH,foliageS,foliageS);
+	}
+	else if($('#radio-2').is(':checked')){
+		triangle(herty,verty-treeH-1.6*foliageS,herty-foliageS*0.5,verty-treeH+0.4*foliageS,herty+foliageS*0.5,verty-treeH+foliageS*0.4);
+		triangle(width-herty,verty-treeH-1.6*foliageS,width-herty+foliageS*0.5,verty-treeH+0.4*foliageS,width-herty-foliageS*0.5,verty-treeH+foliageS*0.4);
+	}
+	else if($('#radio-4').is(':checked')){
+		rectMode(CENTER);
+		rect(herty,verty-treeH,foliageS,foliageS);
+		rect(2*cX-herty,verty-treeH,foliageS,foliageS);
+		rectMode(CORNER);
+	}
+	else{
+		beginShape();
+		vertex(herty-0.3*foliageS,verty-treeH-1.4*foliageS);
+		vertex(herty+0.3*foliageS,verty-treeH-1.4*foliageS);
+		vertex(herty+0.6*foliageS,verty-treeH+0.4*foliageS);
+		vertex(herty-0.6*foliageS,verty-treeH+0.4*foliageS);
+		vertex(herty-0.3*foliageS,verty-treeH-1.4*foliageS);
+		endShape();
+		beginShape();
+		vertex(width-herty+0.3*foliageS,verty-treeH-1.4*foliageS);
+		vertex(width-herty-0.3*foliageS,verty-treeH-1.4*foliageS);
+		vertex(width-herty-0.6*foliageS,verty-treeH+0.4*foliageS);
+		vertex(width-herty+0.6*foliageS,verty-treeH+0.4*foliageS);
+		vertex(width-herty+0.3*foliageS,verty-treeH-1.4*foliageS);
+		endShape();
+	}
 }
 
 
