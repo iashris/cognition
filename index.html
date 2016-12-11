@@ -137,6 +137,7 @@ button{
 <script type="text/javascript">
 var roadwidth=25;
 var foliageshape;
+var factors=['attractive','organized','novel','safe','walkable'];
 var treeheight=250,satx=120,numtrees=10,treetrunk=5,foliagesize=150;
 $( function() {
     $( "#slider" ).slider({
@@ -191,6 +192,8 @@ $('input').checkboxradio();
 $('button').button();
   } );
 function setup(){
+	parameter=factors[parseInt(5*Math.random())];
+	alert('Welcome to the test. Please adjust the values to make the space '+parameter+'. If you have already answered this question, reload.');
 	var myCanvas = createCanvas(windowWidth*0.75,windowHeight);
   myCanvas.parent('myContainer');
   noStroke();
@@ -204,7 +207,7 @@ function setup(){
   firebase.initializeApp(config);
   console.log(firebase);
   var database=firebase.database();
-  ref=database.ref('inputs');
+  ref=database.ref(parameter);
 
 
 }
@@ -342,7 +345,6 @@ function windowResized() {
 	resizeCanvas(windowWidth*0.75, windowHeight);
 }
 function submitthis(){
-alert('pressed');
 var data={
 roadwidth:roadwidth,
 treeheight:treeheight,
@@ -353,7 +355,7 @@ foliagesize:foliagesize,
 shape:foliageshape
 };
 ref.push(data);
-alert('Thank you for your response!');
+alert('Thank you for your response! To take another test, reload the page.');
 }
 </script>
 </html>
