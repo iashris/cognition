@@ -92,6 +92,10 @@ button{
 <div id="slider5"></div>
 <span class="l">Narrower</span><span class="r">Wider</span>
 <br>
+<div class="topbar">Foliage Size</div>
+<div id="slider6"></div>
+<span class="l">Smaller</span><span class="r">Larger</span>
+<br>
 <div class="topbar">Foliage Profile</div>
 <div class="widget">
 
@@ -142,7 +146,7 @@ button{
   crossorigin="anonymous"></script>
 <script type="text/javascript">
 var roadwidth=25;
-var treeheight=250,saturation,numtrees=10,treetrunk=5;
+var treeheight=250,satx=120,numtrees=10,treetrunk=5,foliagesize=150;
 $( function() {
     $( "#slider" ).slider({
       value: 25,
@@ -172,11 +176,11 @@ $( function() {
     	}});
 
      $( "#slider4" ).slider({
-      value: 0,
-      min: -100,
-      max: 100,
+      value: 120,
+      min: 0,
+      max: 180,
     	change:function(event,ui){
-    		saturation=ui.value;
+    		satx=255-ui.value;
     	}});    
           $( "#slider5" ).slider({
       value: 5,
@@ -184,6 +188,13 @@ $( function() {
       max: 30,
     	change:function(event,ui){
     		treetrunk=ui.value;
+    	}});    
+      $( "#slider6" ).slider({
+      value: 150,
+      min: 50,
+      max: 600,
+    	change:function(event,ui){
+    		foliagesize=ui.value;
     	}});    
 $('input').checkboxradio();
 $('button').button();
@@ -261,16 +272,26 @@ function drawroad(){
 
 
 	}
-for(var j=0;j<numtrees;j++){
+for(var j=1;j<numtrees;j++){
 	var starry=cY*(1.6/numtrees)*j;
 	var verty=cY+starry;
 	var herty=cX+48+roadwidth/5+((cX-128+0.2*roadwidth)*starry/cY);
 	fill('#9B6F4F');
 	var trunksize=2+0.5*j*(treetrunk/numtrees);
-	rect(herty-trunksize,verty-10-j*(treeheight/numtrees),2*trunksize,10+j*(treeheight/numtrees));
-	rect(width-herty-trunksize,verty-10-j*(treeheight/numtrees),2*trunksize,10+j*(treeheight/numtrees));
+	var treeH=10+j*(treeheight/numtrees)+40*(noise(45*sin(j))-0.5);
+	rect(herty-trunksize,verty-treeH,2*trunksize,treeH);
+	rect(width-herty-trunksize,verty-treeH,2*trunksize,treeH);
 	// line(herty,verty,herty,verty-5-j*(treeheight/numtrees));
 	// line(2*cX-herty,verty,2*cX-herty,verty-5-j*(treeheight/numtrees));
+
+
+//foliage
+
+	var foliageS=5+0.5*j*(foliagesize/numtrees);
+	var collo='rgba(30,'+satx+',90,0.88)';
+	fill(collo);
+	ellipse(herty,verty-treeH,foliageS,foliageS);
+	ellipse(2*cX-herty,verty-treeH,foliageS,foliageS);
 }
 
 
