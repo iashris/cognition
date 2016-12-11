@@ -25,6 +25,9 @@ html{
 		left: 0;
 		font-size: 1.2em;
 		font-weight: 900;
+		color:#555;
+		margin-bottom: 15px;
+		text-align: center;
 	}
 .content{
 width:85%;
@@ -38,15 +41,63 @@ margin-bottom: 10%;
 		background: #37163B;
 		color:white;
 	}
+span{
+	display: inline-block;
+	text-transform: uppercase;
+	color:#666;
+	font-size: 0.8em;
 
+}
+input{
+	display: inline-block;
+}
+.l{
+	clear: both;
+	float:left;
+}
+.r{
+	float: right;
+}
+.widget{
+	text-align: center;
+	font-size: 0.95em;
+}
 </style>
 <body>
 <div class="controls">
-<div class="topbar">TOPBAR</div>
+
 <div class="content">
+
+<div class="topbar">Road Width</div>
 <div id="slider"></div>
+<span class="l">Narrower</span><span class="r">Wider</span>
+<br><br>
+<div class="topbar">Tree Height</div>
+<div id="slider2"></div>
+<span class="l">Shorter</span><span class="r">Taller</span>
+<br><br>
+<div class="topbar">Number of Trees</div>
+<div id="slider3"></div>
+<span class="l">Less</span><span class="r">More</span>
+<br><br>
+<div class="topbar">Foliage Color Saturation</div>
+<div id="slider4"></div>
+<span class="l">Less</span><span class="r">More</span>
+<br><br>
+<div class="topbar">Foliage Profile</div>
+<div class="widget">
 
 
+    <label for="radio-1">Circular</label>
+    <input class="l" type="radio" name="radio-1" id="radio-1">
+    <label for="radio-3">Trapezoidal</label>
+    <input class="r" type="radio" name="radio-1" id="radio-3">
+    <label for="radio-2">Conical</label>
+    <input class="l" type="radio" name="radio-1" id="radio-2">
+    <label for="radio-4">Rectangular</label>
+    <input class="r" type="radio" name="radio-1" id="radio-4">
+
+</div>
 
 </div>
 </div>
@@ -68,6 +119,7 @@ margin-bottom: 10%;
   crossorigin="anonymous"></script>
 <script type="text/javascript">
 var roadwidth=25;
+var treeheight,saturation,numtrees;
 $( function() {
     $( "#slider" ).slider({
       value: 25,
@@ -77,6 +129,34 @@ $( function() {
     		roadwidth=ui.value;
     		console.log(roadwidth);
     	}});
+
+    $( "#slider2" ).slider({
+      value: 0,
+      min: -100,
+      max: 100,
+    	change:function(event,ui){
+    		treeheight=ui.value;
+    		console.log(roadwidth);
+    	}});
+
+    $( "#slider3" ).slider({
+      value: 0,
+      min: -100,
+      max: 100,
+    	change:function(event,ui){
+    		numtrees=ui.value;
+    		console.log(roadwidth);
+    	}});
+
+     $( "#slider4" ).slider({
+      value: 0,
+      min: -100,
+      max: 100,
+    	change:function(event,ui){
+    		saturation=ui.value;
+    		console.log(roadwidth);
+    	}});    
+$('input').checkboxradio();
   } );
 function setup(){
 	var myCanvas = createCanvas(windowWidth*0.75,windowHeight);
