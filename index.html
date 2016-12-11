@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Archify</title>
+</head>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+<style type="text/css">
+html{
+	overflow-x: hidden;
+	font-family: Source Sans Pro;
+}
+	.controls{
+		top:0;left:0;
+		position: absolute;
+		width: 25%; height: 100%;
+		background: #EBEFF1;
+		padding: 25px;
+		padding-right: 18px;
+
+	}
+	.topbar{
+		top:0;
+		width: 100%;
+		left: 0;
+		font-size: 1.2em;
+		font-weight: 900;
+	}
+.content{
+width:85%;
+text-align: justify;
+margin-bottom: 10%;
+}
+	.main{
+		top:0;left:0;
+		position: absolute;
+		width: 70%;left:25%;height: 100%;
+		background: #37163B;
+		color:white;
+	}
+
+</style>
+<body>
+<div class="controls">
+<div class="topbar">TOPBAR</div>
+<div class="content">
+<div id="slider"></div>
+
+
+
+</div>
+</div>
+
+<div class="main" id="myContainer"></div><!--This is where the p5 happens-->
+</body>
+
+
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/p5.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/addons/p5.dom.min.js"></script>
+  <script
+  src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+var roadwidth=25;
+$( function() {
+    $( "#slider" ).slider({
+      value: 25,
+      min: -100,
+      max: 150,
+    	change:function(event,ui){
+    		roadwidth=ui.value;
+    		console.log(roadwidth);
+    	}});
+  } );
+function setup(){
+	var myCanvas = createCanvas(windowWidth*0.75,windowHeight);
+  myCanvas.parent('myContainer');
+  noStroke();
+
+}
+function draw(){
+	background('#D7EDEB');
+	fill('#2DBE61');
+	rect(0,height/2,width,height/2);
+	drawroad();
+}
+function drawroad(){
+	fill('#7D7D7C'); //main road
+	var cX=width/2;var cY=height/2;
+	beginShape();
+		vertex(cX-18-roadwidth/5,cY);
+		vertex(cX+18+roadwidth/5,cY);
+		vertex(width-200+roadwidth,height);
+		vertex(200-roadwidth,height);
+	endShape();
+
+	fill('#F5E3C8');
+	beginShape(); //left shit
+		vertex(cX-18-roadwidth/5,cY);
+		vertex(cX-18-roadwidth/5-8,cY);
+		vertex(200-roadwidth-50,height);
+		vertex(200-roadwidth,height);
+	endShape();
+	beginShape(); //left shit
+		vertex(cX+18+roadwidth/5,cY);
+		vertex(cX+18+roadwidth/5+8,cY);
+		vertex(width-200+roadwidth+50,height);
+		vertex(width-200+roadwidth,height);
+	endShape();
+
+	//buildings
+
+
+	stroke('#000000');
+	//right line
+	line(cX+48+roadwidth/5,cY,width+roadwidth-30,height);
+	var weights=[0.0,0.06,0.12,0.18,0.24,0.35,0.5,0.75,1.05];
+	for(var i=0;i<weights.length;i++){
+		var star=weights[i]*cY;
+		var vert=cY+star;
+		var hert=cX+48+roadwidth/5+((cX-78+0.8*roadwidth)*star/cY);
+		var buildht=Math.pow(i,1.2)*30;
+		fill('#A8A5A4');
+		rect(hert,vert-buildht,buildht/2,buildht);
+		rect(2*cX-hert-buildht/2,vert-buildht,buildht/2,buildht);
+		line(cX-18-roadwidth/5-30,cY,-roadwidth+30,height);
+		var dfgdfg=(hert-10*i-cX-48-0.2*roadwidth)/(cX-78+0.8*roadwidth);
+		fill('#ffffff');
+		if(hert>cX){
+			beginShape();
+			vertex(hert,vert);
+			vertex(hert,vert-buildht);
+			vertex(hert-i*10,vert-buildht+i*5);
+			vertex(hert-i*10,cY*(1+dfgdfg));
+			endShape();
+
+			beginShape();
+			vertex(2*cX-hert,vert);
+			vertex(2*cX-hert,vert-buildht);
+			vertex(2*cX-hert+i*10,vert-buildht+i*5);
+			vertex(2*cX-hert+i*10,cY*(1+dfgdfg));
+			endShape();
+
+		}
+		//trees
+		var treecolor="#00ff00";
+		var stemsize=10;
+		var foliages=['cone','circle','frustrum','cube'];
+		var treespacing=20;
+
+
+	}
+
+
+
+
+
+	
+
+}
+function windowResized() {
+	resizeCanvas(windowWidth*0.75, windowHeight);
+}
+function conicalTree(stemsize){
+	this.x=x;
+	this.y=y;
+
+}
+</script>
+</html>
