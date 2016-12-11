@@ -75,19 +75,23 @@ button{
 <div class="topbar">Road Width</div>
 <div id="slider"></div>
 <span class="l">Narrower</span><span class="r">Wider</span>
-<br><br>
+<br>
 <div class="topbar">Tree Height</div>
 <div id="slider2"></div>
 <span class="l">Shorter</span><span class="r">Taller</span>
-<br><br>
+<br>
 <div class="topbar">Number of Trees</div>
 <div id="slider3"></div>
 <span class="l">Less</span><span class="r">More</span>
-<br><br>
+<br>
 <div class="topbar">Foliage Color Saturation</div>
 <div id="slider4"></div>
 <span class="l">Less</span><span class="r">More</span>
-<br><br>
+<br>
+<div class="topbar">Tree Trunk Width</div>
+<div id="slider5"></div>
+<span class="l">Narrower</span><span class="r">Wider</span>
+<br>
 <div class="topbar">Foliage Profile</div>
 <div class="widget">
 
@@ -138,7 +142,7 @@ button{
   crossorigin="anonymous"></script>
 <script type="text/javascript">
 var roadwidth=25;
-var treeheight,saturation,numtrees;
+var treeheight=250,saturation,numtrees=10,treetrunk=5;
 $( function() {
     $( "#slider" ).slider({
       value: 25,
@@ -146,25 +150,25 @@ $( function() {
       max: 150,
     	change:function(event,ui){
     		roadwidth=ui.value;
-    		console.log(roadwidth);
+    	
     	}});
 
     $( "#slider2" ).slider({
-      value: 0,
-      min: -100,
-      max: 100,
+      value: 250,
+      min: 100,
+      max: 800,
     	change:function(event,ui){
     		treeheight=ui.value;
-    		console.log(roadwidth);
+    	
     	}});
 
     $( "#slider3" ).slider({
-      value: 0,
-      min: -100,
-      max: 100,
+      value: 10,
+      min: 2,
+      max: 50,
     	change:function(event,ui){
     		numtrees=ui.value;
-    		console.log(roadwidth);
+    		
     	}});
 
      $( "#slider4" ).slider({
@@ -173,7 +177,13 @@ $( function() {
       max: 100,
     	change:function(event,ui){
     		saturation=ui.value;
-    		console.log(roadwidth);
+    	}});    
+          $( "#slider5" ).slider({
+      value: 5,
+      min: 0.5,
+      max: 30,
+    	change:function(event,ui){
+    		treetrunk=ui.value;
     	}});    
 $('input').checkboxradio();
 $('button').button();
@@ -248,14 +258,22 @@ function drawroad(){
 			endShape();
 
 		}
-		//trees
-		var treecolor="#00ff00";
-		var stemsize=10;
-		var foliages=['cone','circle','frustrum','cube'];
-		var treespacing=20;
 
 
 	}
+for(var j=0;j<numtrees;j++){
+	var starry=cY*(1.6/numtrees)*j;
+	var verty=cY+starry;
+	var herty=cX+48+roadwidth/5+((cX-128+0.2*roadwidth)*starry/cY);
+	fill('#9B6F4F');
+	var trunksize=2+0.5*j*(treetrunk/numtrees);
+	rect(herty-trunksize,verty-10-j*(treeheight/numtrees),2*trunksize,10+j*(treeheight/numtrees));
+	rect(width-herty-trunksize,verty-10-j*(treeheight/numtrees),2*trunksize,10+j*(treeheight/numtrees));
+	// line(herty,verty,herty,verty-5-j*(treeheight/numtrees));
+	// line(2*cX-herty,verty,2*cX-herty,verty-5-j*(treeheight/numtrees));
+}
+
+
 
 
 
