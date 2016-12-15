@@ -7,8 +7,11 @@
 <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 <style type="text/css">
 html{
-	overflow-x: hidden;
+	overflow: hidden;
 	font-family: Source Sans Pro;
+}
+.averagebar{
+	text-align: center;
 }
 	.controls{
 		top:0;left:0;
@@ -112,9 +115,30 @@ button{
 
 <br><br>
 <button onclick='submitthis();'>Submit</button>
+
+<br>
+<br>
+
 </div>
+<div class="averagebar">
+    <select name="avgprop" id="avgprop">
+      <option>attractive</option>
+      <option selected="selected">organized</option>
+      <option>novel</option>
+      <option>safe</option>
+      <option>walkable</option>
+      </select>
+<br>
+    <select name="avgshape" id="avgshape">
+      <option>circle</option>
+      <option selected="selected">cone</option>
+      <option>rect</option>
+      <option>trapezium</option>
+      </select>
+<br><br>
+      <button onclick="avgthis();">Average</button>
 
-
+</div>
 </div>
 </div>
 
@@ -139,6 +163,7 @@ var roadwidth=25;
 var foliageshape;
 var factors=['attractive','organized','novel','safe','walkable'];
 var treeheight=250,satx=120,numtrees=10,treetrunk=5,foliagesize=150;
+
 $( function() {
     $( "#slider" ).slider({
       value: 25,
@@ -190,6 +215,7 @@ $( function() {
     	}});    
 $('input').checkboxradio();
 $('button').button();
+$('select').selectmenu();
   } );
 function setup(){
 	parameter=factors[parseInt(5*Math.random())];
@@ -197,17 +223,18 @@ function setup(){
 	var myCanvas = createCanvas(windowWidth*0.75,windowHeight);
   myCanvas.parent('myContainer');
   noStroke();
-    var config = {
-    apiKey: "AIzaSyAOYAKVeuZsPB3nunaQz731be8764hBKg8",
-    authDomain: "tree-cognition.firebaseapp.com",
-    databaseURL: "https://tree-cognition.firebaseio.com",
-    storageBucket: "tree-cognition.appspot.com",
-    messagingSenderId: "987416380147"
+  var config = {
+    apiKey: "AIzaSyDmLbvGA-HLI3VLQsLVR-bZFtxEXBvpBMY",
+    authDomain: "tree-cognition-32169.firebaseapp.com",
+    databaseURL: "https://tree-cognition-32169.firebaseio.com",
+    storageBucket: "tree-cognition-32169.appspot.com",
+    messagingSenderId: "193634910601"
   };
+
   firebase.initializeApp(config);
-  console.log(firebase);
-  var database=firebase.database();
-  ref=database.ref(parameter);
+
+  database=firebase.database();
+  
 
 
 }
@@ -351,11 +378,47 @@ treeheight:treeheight,
 numtrees:numtrees,
 saturation:satx,
 trunksize:treetrunk,
-foliagesize:foliagesize,
-shape:foliageshape
+foliagesize:foliagesize
 };
+var ref=database.ref(parameter+'/'+foliageshape);
 ref.push(data);
 alert('Thank you for your response! To take another test, reload the page.');
+
 }
+function avgthis(){
+	var shp=$('#avgshape').val();
+	var typ=$('#avgprop').val();
+	database.ref(typ+'/'+shp).once('value').then(function(snapshot) {
+  var content=snapshot.val();
+  console.log(content);
+  if(!content)return alert('Empty! Not enough values');
+  var summer={};
+  for(prop in content[Object.keys(content)[0]]){
+  	summer[prop]=Object.keys(content).reduce(function(prev,key){
+  		return prev+content[key][prop];
+  	},0);
+  }
+  var averager={};
+  var lenz=Object.keys(content).length;
+  for(propk in summer)averager[propk]=Math.round(summer[propk]/lenz);
+  arrange(averager.roadwidth,averager.treeheight,averager.numtrees,averager.saturation,averager.trunksize,averager.foliagesize);
+});
+
+}
+function arrange(qroadwidth,qtreeheight,qnumtrees,qsat,qtrunksize,qfolsize){
+	$('#slider').slider('value',qroadwidth);
+	roadwidth=qroadwidth;
+	$('#slider2').slider('value',qtreeheight);
+	treeheight=qtreeheight;
+	$('#slider3').slider('value',qnumtrees);
+	numtrees=qnumtrees;
+	$('#slider4').slider('value',qsat);
+	satx=qsat;
+	$('#slider5').slider('value',qtrunksize);
+	trunksize=qtrunksize;
+	$('#slider6').slider('value',qfolsize);
+	foliagesize=qfolsize;
+
+	}
 </script>
 </html>
