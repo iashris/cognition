@@ -386,7 +386,7 @@ alert('Thank you for your response! To take another test, reload the page.');
 
 }
 function avgthis(){
-	var shp=$('#avgshape').val();
+	shp=$('#avgshape').val();
 	var typ=$('#avgprop').val();
 	database.ref(typ+'/'+shp).once('value').then(function(snapshot) {
   var content=snapshot.val();
@@ -418,6 +418,18 @@ function arrange(qroadwidth,qtreeheight,qnumtrees,qsat,qtrunksize,qfolsize){
 	trunksize=qtrunksize;
 	$('#slider6').slider('value',qfolsize);
 	foliagesize=qfolsize;
+	if(shp=='circle'){
+$('#radio-1').prop('checked',true);
+	}
+	else if(shp=='cone'){
+$('#radio-2').prop('checked',true);
+	}
+	else if(shp=='trapezium'){
+$('#radio-3').prop('checked',true);
+	}
+	else{
+$('#radio-4').prop('checked',true);
+	}
 
 	}
 </script>
